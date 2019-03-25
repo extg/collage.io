@@ -42,14 +42,18 @@ const Canvas = () => {
 const SaveButton = () => {
   const listener = {
     handleEvent(e) {
-      console.log('clicked');
+      console.log(e)
+      const canvas = document.getElementById('canvas')
+      const image = canvas.toDataURL("image/jpg")
+      e.target.href = image
+      e.target.click()
     },
     capture: true,
   };
 
   return html`
     <div>
-      <a @click=${listener}>
+      <a @click=${listener} href="javascript:;">
         Save
       </a> 
     </div>   
