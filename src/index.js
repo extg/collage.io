@@ -1,13 +1,9 @@
 import {html, render} from 'lit-html';
 
-import Canvas from './components/Canvas'
-import SaveButton from './components/SaveButton'
+import Main from './components/Main'
 
 const UNSPLASH_COLLECTION_URL =
   "https://source.unsplash.com/collection/583479/";
-
-const WIDTH = 500
-const HEIGHT = 500
 
 let totalImagesCount
 
@@ -20,13 +16,6 @@ let imagesAreLoaded = false
 let loadedImagesCount = 0
 
 const images = []
-
-const Main = () => html`
-  <main>
-    ${Canvas({width: WIDTH, height: HEIGHT})}
-    ${SaveButton()}
-  </main>  
-`
 
 function generateBasicHTML() {
   render(Main(), document.body);
