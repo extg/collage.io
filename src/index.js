@@ -1,10 +1,13 @@
 import {html, render} from 'lit-html';
 
+import Canvas from './components/Canvas'
+import SaveButton from './components/SaveButton'
+
 const UNSPLASH_COLLECTION_URL =
   "https://source.unsplash.com/collection/583479/";
+
 const WIDTH = 500
 const HEIGHT = 500
-
 
 let totalImagesCount
 
@@ -18,69 +21,12 @@ let loadedImagesCount = 0
 
 const images = []
 
-function addCanvas() {
-  canvas = document.createElement("canvas");
-  canvas.width = 500;
-  canvas.height = 500;
-
-  document.body.appendChild(canvas);
-
-  ctx = canvas.getContext("2d");
-  ctx.font = "30px Arial";
-  ctx.textAlign = "center"
-  ctx.filter = 'sepia(35%)'
-
-  ctx.fillText("Loading...", 250, 50)
-}
-
-const Canvas = () => {
-  return html`
-    <canvas id="canvas" width="${WIDTH}" height="${HEIGHT}"></canvas>   
-  `;
-}
-
-const SaveButton = () => {
-  const listener = {
-    handleEvent(e) {
-      e.preventDefault()
-      console.log(e)
-      const canvas = document.getElementById('canvas')
-      const image = canvas.toDataURL("image/jpg")
-      // saveBase64AsFile(canvas)
-      saveBase64AsFile2(image)
-      // window.open(image)
-      // e.target.href = image
-      // e.target.click()
-    },
-    capture: true,
-  };
-
-  return html`
-    <div>
-      <a class="link" @click=${listener}>
-        Save
-      </a> 
-    </div>   
-  `;
-}
-
 const Main = () => html`
   <main>
-    ${Canvas()}
+    ${Canvas({width: WIDTH, height: HEIGHT})}
     ${SaveButton()}
   </main>  
 `
-
-// It's rendered with the `render()` function:
-// render(sayHello('World'), document.body);
-
-function addSaveButton() {
-  saveButton = document.createElement("a");
-  saveButton.download = "web3.jpg"
-  saveButton.innerHTML = "Save image";
-
-  document.body.appendChild(saveButton);
-}
 
 function generateBasicHTML() {
   render(Main(), document.body);
@@ -92,17 +38,10 @@ function generateBasicHTML() {
   ctx.filter = 'sepia(35%)'
 
   ctx.fillText("Loading...", 250, 50)
-  // addCanvas();
-  // addSaveButton();
-}
-
-function downloadImage() {
-  const image = canvas.toDataURL("image/jpg")
-  saveButton.href=image
 }
 
 function displayImages() {
-  images.forEach(({image,left,top})=>ctx.drawImage(image, left, top))
+  images.forEach(({image, left, top}) => ctx.drawImage(image, left, top))
 }
 
 function displayText() {
@@ -125,8 +64,6 @@ function displayText() {
   console.log(quoteChunks, quoteText)
 
   ctx.fillStyle = "#ffffff"
-  // ctx.lineWidth = 3
-  // // ctx.font = "italic bold 25pt Tahoma"
 
   const chunksCount = quoteChunks.length
 
@@ -214,25 +151,4 @@ function generateCanvasContent() {
 window.onload = () => {
   generateBasicHTML();
   generateCanvasContent();
-
-  // saveButton.addEventListener("click", downloadImage);
-}
-
-function saveBase64AsFile(canvas) {
-  var img = canvas.toDataURL()
-  var iframe = '<iframe src="' + img + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>'
-  var x = window.open();
-  x.document.open();
-  x.document.write(iframe);
-  x.document.close();
-}
-
-
-function saveBase64AsFile2(base64, fileName = 'collage.jpg') {
-
-  var link = document.createElement("a");
-
-  link.setAttribute("href", base64);
-  link.setAttribute("download", fileName);
-  link.click();
 }
