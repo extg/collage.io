@@ -1,0 +1,9 @@
+.link
+{
+    cursor: pointer;
+    color: lightskyblue;
+    padding: 10px 20px;
+    background-color: aliceblue;
+    border-radius: 3px;
+    margin-top: 20px;
+}
