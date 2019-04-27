@@ -76,22 +76,25 @@ function displayContent() {
 }
 
 function generateImage(width, height, left, top) {
-  const image = new Image();
+ return new Promise((resolve, reject) => {
+   const image = new Image();
 
-  image.crossOrigin = 'anonymous'
+   image.crossOrigin = 'anonymous'
 
-  image.src = `${UNSPLASH_COLLECTION_URL}${width}x${height}`;
+   image.src = `${UNSPLASH_COLLECTION_URL}${width}x${height}`;
 
-  image.onload = () => {
-    images.push({ image, left, top })
-    loadedImagesCount++
+   image.onload = () => {
+     images.push({ image, left, top })
+     loadedImagesCount++
 
-    imagesAreLoaded = loadedImagesCount === totalImagesCount
+     imagesAreLoaded = loadedImagesCount === totalImagesCount
 
-    if (imagesAreLoaded && quoteIsLoaded) {
-      displayContent()
-    }
-  };
+     if (imagesAreLoaded && quoteIsLoaded) {
+       displayContent()
+       resolve()
+     }
+   };
+ })
 }
 
 function generateImageCollage() {
@@ -132,8 +135,8 @@ async function generateText() {
   }
 }
 
-function generateCanvasContent() {
-  generateImageCollage();
+async function generateCanvasContent() {
+  await generateImageCollage();
   generateText();
 }
 
